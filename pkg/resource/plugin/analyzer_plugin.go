@@ -75,7 +75,9 @@ func (a *analyzer) label() string {
 }
 
 // Analyze analyzes a single resource object, and returns any errors that it finds.
-func (a *analyzer) Analyze(t tokens.Type, props resource.PropertyMap) ([]AnalyzeFailure, error) {
+func (a *analyzer) Analyze(
+	t tokens.Type, props resource.PropertyMap) ([]*pulumirpc.AnalyzeDiagnostic, error) {
+
 	label := fmt.Sprintf("%s.Analyze(%s)", a.label(), t)
 	logging.V(7).Infof("%s executing (#props=%d)", label, len(props))
 	mprops, err := MarshalProperties(props, MarshalOptions{})
@@ -93,13 +95,7 @@ func (a *analyzer) Analyze(t tokens.Type, props resource.PropertyMap) ([]Analyze
 		return nil, rpcError
 	}
 
-	var failures []AnalyzeFailure
-	for _, failure := range resp.GetFailures() {
-		failures = append(failures, AnalyzeFailure{
-			Property: resource.PropertyKey(failure.Property),
-			Reason:   failure.Reason,
-		})
-	}
+	failures := resp.GetDiagnostics()
 	logging.V(7).Infof("%s success: failures=#%d", label, len(failures))
 	return failures, nil
 }

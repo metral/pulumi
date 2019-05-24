@@ -20,6 +20,7 @@ import (
 	"github.com/pulumi/pulumi/pkg/resource"
 	"github.com/pulumi/pulumi/pkg/tokens"
 	"github.com/pulumi/pulumi/pkg/workspace"
+	pulumirpc "github.com/pulumi/pulumi/sdk/proto/go"
 )
 
 // Analyzer provides a pluggable interface for performing arbitrary analysis of entire projects/stacks/snapshots, and/or
@@ -31,7 +32,7 @@ type Analyzer interface {
 	// Name fetches an analyzer's qualified name.
 	Name() tokens.QName
 	// Analyze analyzes a single resource object, and returns any errors that it finds.
-	Analyze(t tokens.Type, props resource.PropertyMap) ([]AnalyzeFailure, error)
+	Analyze(t tokens.Type, props resource.PropertyMap) ([]*pulumirpc.AnalyzeDiagnostic, error)
 	// GetPluginInfo returns this plugin's information.
 	GetPluginInfo() (workspace.PluginInfo, error)
 }

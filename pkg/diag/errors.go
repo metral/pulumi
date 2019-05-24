@@ -44,9 +44,9 @@ func GetResourcePropertyInvalidValueError(urn resource.URN) *Diag {
 func GetAnalyzeResourceFailureError(urn resource.URN) *Diag {
 	return newError(urn, 2004,
 		"Analyzer '%v' reported a resource error:\n"+
-			"\tResource: %v\n"+
-			"\tProperty: %v\n"+
-			"\tReason: %v")
+			"\tPolicy name: %v\n"+
+			"\tPolicy description: %v\n"+
+			"\tPolicy message: %v")
 }
 
 func GetPreviewFailedError(urn resource.URN) *Diag {

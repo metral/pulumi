@@ -24,6 +24,7 @@ import (
 	"github.com/pulumi/pulumi/pkg/util/contract"
 	"github.com/pulumi/pulumi/pkg/util/logging"
 	"github.com/pulumi/pulumi/pkg/util/result"
+	pulumirpc "github.com/pulumi/pulumi/sdk/proto/go"
 )
 
 // stepGenerator is responsible for turning resource events into steps that
@@ -189,15 +190,15 @@ func (sg *stepGenerator) GenerateSteps(event RegisterResourceEvent) ([]Step, res
 		} else if analyzer == nil {
 			return nil, result.Errorf("analyzer '%v' could not be loaded from your $PATH", a)
 		}
-		var failures []plugin.AnalyzeFailure
-		failures, err = analyzer.Analyze(new.Type, inputs)
+		var diagnostics []*pulumirpc.AnalyzeDiagnostic
+		diagnostics, err = analyzer.Analyze(new.Type, inputs)
 		if err != nil {
 			return nil, result.FromError(err)
 		}
-		for _, failure := range failures {
+		for _, d := range diagnostics {
 			invalid = true
 			sg.plan.Diag().Errorf(
-				diag.GetAnalyzeResourceFailureError(urn), a, urn, failure.Property, failure.Reason)
+				diag.GetAnalyzeResourceFailureError(urn), a, urn, d.GetName(), d.GetMessage())
 		}
 	}
 
