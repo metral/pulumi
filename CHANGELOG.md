@@ -7,6 +7,8 @@
 - Support for referencing the outputs of other Pulumi stacks has been added to the Pulumi Python libraries via the
   `StackReference` type.
 - Add CI system detection for Bitbucket Pipelines.
+- Fix a crash that would happen if you ran `pulumi stack output` against an empty stack (fixes
+  [pulumi/pulumi#2792](https://github.com/pulumi/pulumi/issues/2792)).
 
 ## 0.17.14 (Released May 28, 2019)
 
