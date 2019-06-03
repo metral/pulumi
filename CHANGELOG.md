@@ -12,6 +12,9 @@
   replacements or re-creation of the resource.
 - `pulumi plugin install` gained a new optional argument `--server` which can be used to provide a custom server to be
   used when downloading a plugin.
+- Fix a bug where the path provided to a URL in `pulumi login` is lost are dropped, so if you `pulumi login
+  s3://bucketname/afolder`, the Pulumi files will be inside of `s3://bucketname/afolder/.pulumi` rather than
+  `s3://bucketname/.pulumi` (thanks, [@bigkraig](https://github.com/bigkraig)!)
 
 ## 0.17.14 (Released May 28, 2019)
 
