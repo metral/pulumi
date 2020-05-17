@@ -1063,7 +1063,7 @@ func (pt *ProgramTester) TestPreviewUpdateAndEdits() error {
 	}
 
 	// Run additional validation provided by the test options, passing in the checkpoint info.
-	if err := pt.performExtraRuntimeValidation(pt.opts.ExtraRuntimeValidation, dir); err != nil {
+	if err := pt.PerformExtraRuntimeValidation(pt.opts.ExtraRuntimeValidation, dir); err != nil {
 		return err
 	}
 
@@ -1293,10 +1293,11 @@ func (pt *ProgramTester) testEdit(dir string, i int, edit EditDir) error {
 			return err
 		}
 	}
-	return pt.performExtraRuntimeValidation(edit.ExtraRuntimeValidation, dir)
+	return pt.PerformExtraRuntimeValidation(edit.ExtraRuntimeValidation, dir)
 }
 
-func (pt *ProgramTester) performExtraRuntimeValidation(
+// PerformExtraRuntimeValidation runs extra validation steps on the stack.
+func (pt *ProgramTester) PerformExtraRuntimeValidation(
 	extraRuntimeValidation func(stack RuntimeValidationStackInfo), dir string) error {
 
 	if extraRuntimeValidation == nil {
