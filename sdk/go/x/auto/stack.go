@@ -632,6 +632,9 @@ func (s *Stack) runPulumiCmdSync(ctx context.Context, args ...string) (string, s
 		homeEnv := fmt.Sprintf("%s=%s", pulumiHomeEnv, s.Workspace().PulumiHome())
 		env = append(env, homeEnv)
 	}
+	if envvars, err := s.Workspace().GetEnvVars(); err == nil {
+		env = append(env, envvars...)
+	}
 	additionalArgs, err := s.Workspace().SerializeArgsForOp(ctx, s.Name())
 	if err != nil {
 		return "", "", -1, errors.Wrap(err, "failed to exec command, error getting additional args")

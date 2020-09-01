@@ -67,6 +67,17 @@ func TestNewStackLocalSource(t *testing.T) {
 		t.FailNow()
 	}
 
+	// Set environment variables scoped to the workspace.
+	envvars := []string{
+		"foo=bar",
+		"barfoo=foobar",
+	}
+	err = s.Workspace().SetEnvVars(envvars)
+	assert.Nil(t, err, "failed to set environment values.")
+	s.Workspace().SetEnvVar("bar", "buzz")
+	_, err = s.Workspace().GetEnvVars()
+	assert.Nil(t, err, "failed to get environment values.")
+
 	// -- pulumi up --
 	res, err := s.Up(ctx)
 	if err != nil {
