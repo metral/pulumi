@@ -56,6 +56,10 @@ type Workspace interface {
 	RemoveAllConfig(context.Context, string, []string) error
 	// RefreshConfig gets and sets the config map used with the last Update for Stack matching fullyQualifiedStackName.
 	RefreshConfig(context.Context, string) (ConfigMap, error)
+	// GetEnvVars returns the environment values scoped to the current workspace.
+	GetEnvVars() map[string]string
+	// SetEnvVars sets the specified environment values scoped to the current workspace.
+	SetEnvVars(map[string]string)
 	// WorkDir returns the working directory to run Pulumi CLI commands.
 	WorkDir() string
 	// PulumiHome returns the directory override for CLI metadata if set.

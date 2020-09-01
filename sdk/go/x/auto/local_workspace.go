@@ -42,6 +42,7 @@ type LocalWorkspace struct {
 	workDir    string
 	pulumiHome string
 	program    pulumi.RunFunc
+	envvars    map[string]string
 }
 
 var settingsExtensions = []string{".yaml", ".yml", ".json"}
@@ -244,6 +245,16 @@ func (l *LocalWorkspace) RefreshConfig(ctx context.Context, fqsn string) (Config
 	return cfg, nil
 }
 
+// GetEnvVars returns the environment values scoped to the current workspace.
+func (l *LocalWorkspace) GetEnvVars() map[string]string {
+	return l.envvars
+}
+
+// SetEnvVars sets the specified environment values scoped to the current workspace.
+func (l *LocalWorkspace) SetEnvVars(envvars map[string]string) {
+	l.envvars = envvars
+}
+
 // WorkDir returns the working directory to run Pulumi CLI commands.
 // LocalWorkspace expects that this directory contains a Pulumi.yaml file.
 // For "Inline" Pulumi programs created from NewStackInlineSource, a Pulumi.yaml
@@ -409,6 +420,9 @@ func (l *LocalWorkspace) runPulumiCmdSync(
 	if l.PulumiHome() != "" {
 		homeEnv := fmt.Sprintf("%s=%s", pulumiHomeEnv, l.PulumiHome())
 		env = append(env, homeEnv)
+		for k, v := range l.GetEnvVars() {
+			env = append(env, fmt.Sprintf("%s=%s", k, v))
+		}
 	}
 	return runPulumiCommandSync(ctx, l.WorkDir(), env, args...)
 }

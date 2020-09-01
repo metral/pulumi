@@ -631,6 +631,9 @@ func (s *Stack) runPulumiCmdSync(ctx context.Context, args ...string) (string, s
 	if s.Workspace().PulumiHome() != "" {
 		homeEnv := fmt.Sprintf("%s=%s", pulumiHomeEnv, s.Workspace().PulumiHome())
 		env = append(env, homeEnv)
+		for k, v := range s.Workspace().GetEnvVars() {
+			env = append(env, fmt.Sprintf("%s=%s", k, v))
+		}
 	}
 	additionalArgs, err := s.Workspace().SerializeArgsForOp(ctx, s.Name())
 	if err != nil {
