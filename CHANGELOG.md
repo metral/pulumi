@@ -3,6 +3,9 @@ CHANGELOG
 
 ## HEAD (Unreleased)
 
+- feat(autoapi): add Upsert methods for stacks
+  [#5256](https://github.com/pulumi/pulumi/pull/5256)
+
 - Add IsSelectStack404Error and IsCreateStack409Error
   [#5255](https://github.com/pulumi/pulumi/pull/5255)
 
